@@ -1,4 +1,6 @@
 {
   "login": "Đăng nhập",
-  "helloWorld": "Xin chào!"
+  "loginGetOtp": "Lấy OTP",
+  "loginGetRegister": "Đăng ký",
+  "loginGetQr": "Mã QR"
 }

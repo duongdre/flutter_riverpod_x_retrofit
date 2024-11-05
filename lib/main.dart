@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         Locale('en'), // English
         Locale('vi'), // Vietnamese
       ],*/
-      home: const LoginScreen(),
+      home: LoginScreen(),
     );
   }
 }
