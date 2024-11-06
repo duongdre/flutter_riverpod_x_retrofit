@@ -1,4 +1,5 @@
 import 'package:acb/screens/home/UI/home_screen.dart';
+import 'package:acb/screens/login/UI/login_screen.dart';
 import 'package:acb/screens/splash/UI/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,7 +34,14 @@ final _router = GoRouter(
       path: HomeScreen.routePath,
       name: HomeScreen.routeName,
       builder: (context, state) => const HomeScreen(),
-      routes: [],
+      routes: [
+        GoRoute(
+          path: LoginScreen.routePath,
+          name: LoginScreen.routeName,
+          builder: (context, state) => const LoginScreen(),
+          routes: [],
+        ),
+      ],
     ),
 
     // Example for Nested navigation

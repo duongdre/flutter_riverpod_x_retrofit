@@ -26,10 +26,10 @@ class ButtonBlueRounedShared extends ConsumerWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          onTap: onTap,
           // splashColor: ColorName.whiteColor,
           focusColor: ColorName.whiteColor,
           borderRadius: const BorderRadius.all(Radius.circular(100)),
-          onTap: onTap,
           child: Center(
             child: text,
           ),

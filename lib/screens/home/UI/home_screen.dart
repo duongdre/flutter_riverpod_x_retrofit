@@ -1,7 +1,10 @@
+import 'package:acb/main.dart';
+import 'package:acb/screens/login/UI/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
@@ -9,14 +12,15 @@ import '../../../widgets/buttons/button_blue_rouned_shared.dart';
 import '../../../widgets/buttons/button_icon_with_text_shared.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../widgets/buttons/card_slide_shared.dart';
 import '../controller/home_screen_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
+  // Since Home is the first screen, the path have to be "/routeName"
+  // The other screens's routePaths would be "reouteName"
   static const routeName = 'home';
-  static const routePath = "/$routeName";
+  static const routePath = '/$routeName';
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -24,10 +28,13 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late FirebaseFirestore db;
+  bool isVisible = true;
 
   @override
   void initState() {
     // FirebaseFirestore.setLoggingEnabled(true);
+
+    // ref.read(homeCardSlideNotifierProvider.notifier).startNotify();
 
     db = FirebaseFirestore.instance;
 
@@ -35,15 +42,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       precacheImage(Assets.images.loginCard1.provider(), context);
       precacheImage(Assets.images.loginCard2.provider(), context);
       precacheImage(Assets.images.loginCard3.provider(), context);
+
+      ref.read(homeCardSlideNotifierProvider.notifier).startNotify();
     });
 
     super.initState();
   }
 
+
+  @override
+  void dispose() {
+    print("_HomeScreen => dispose()");
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
-      print("_LoginScreenState => build()");
+      print("_HomeScreen => build()");
     }
 
     // precacheImage(Assets.images.loginCard1.provider(), context);
@@ -87,7 +103,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Container(
                       margin: const EdgeInsets.only(top: 10),
                       width: 200,
-                      child: Assets.images.acbone.image(),
+                      child: Assets.images.acbOneWhite.image(),
                     ),
                     Container(
                       height: 120,
@@ -123,31 +139,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 12, right: 12),
-                      child: CardSlideShared(
-                        provider: homeScreenNotifierProvider,
-                        images: [
-                          Assets.images.loginCard1.provider(),
-                          Assets.images.loginCard2.provider(),
-                          Assets.images.loginCard3.provider(),
-                        ],
-                        height: 90,
-                      ),
+                      /*CardSlideShared(
+                          provider: homeScreenNotifierProvider,
+                          images: [
+                            Assets.images.loginCard1.provider(),
+                            Assets.images.loginCard2.provider(),
+                            Assets.images.loginCard3.provider(),
+                          ],
+                          height: 90,
+                        )*/
+                      child: _getCardSlide(context),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 32, left: 16, right: 16, bottom: 32),
                       child: ButtonBlueRounedShared(
                           height: 60,
                           width: double.infinity,
-                          onTap: () async {
-                            print("=========== START ===========");
-
-                            await db.collection("users").get().then((event) {
-                              for (var doc in event.docs) {
-                                print("${doc.id} => ${doc.data()}");
-                              }
-                            });
-
-                            print("=========== END ===========");
+                          onTap: () {
+                            ref.read(homeCardSlideNotifierProvider.notifier).stopNotify();
+                            context.goNamed(LoginScreen.routeName);
                           },
                           text: Text(
                             AppLocalizations.of(context)!.login,
@@ -212,6 +222,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _getCardSlide(BuildContext context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final homeCardSlideNotifier = ref.watch(homeCardSlideNotifierProvider);
+        final value = homeCardSlideNotifier.value;
+        return Center(
+          child: Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Container(
+              height: 90,
+              color: Colors.transparent,
+              child: _getCard(value),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _getCard(ImageProvider<Object> value) {
+    print("HomeScreen _getCard $value");
+    return Container(
+      height: 90,
+      color: Colors.transparent,
+      child: Image(image: value),
     );
   }
 }
