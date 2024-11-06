@@ -1,4 +1,4 @@
-import 'package:acb/screens/login/UI/home_screen.dart';
+import 'package:acb/screens/home/UI/home_screen.dart';
 import 'package:acb/screens/splash/UI/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
