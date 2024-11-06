@@ -1,0 +1,6 @@
+{
+  "login": "Login",
+  "loginGetOtp": "Get OTP",
+  "loginGetRegister": "Registration",
+  "loginGetQr": "QR Code"
+}
