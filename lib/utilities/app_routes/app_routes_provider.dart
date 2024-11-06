@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -29,5 +30,28 @@ class AppRouteStateNotifier extends _$AppRouteStateNotifier {
   void onPop(String screenName) {
     print('Screen popped: $screenName');
     state = '/'; // Reset state or set previous screen if needed
+  }
+}
+
+
+class AppRoutesObserver extends AutoRouterObserver {
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    print('New route pop: ${route.settings.name}');
+  }
+
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    print('New route pushed: ${route.settings.name}');
+  }
+
+  @override
+  void didReplace({Route? newRoute, Route? oldRoute}) {
+    print('New route pushNext: ${oldRoute} to ${newRoute}');
+  }
+
+  @override
+  void didRemove(Route route, Route? previousRoute) {
+    print('New route pushNext: ${previousRoute}');
   }
 }

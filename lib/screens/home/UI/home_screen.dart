@@ -29,6 +29,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late FirebaseFirestore db;
   bool isVisible = true;
+  String allProducts = "";
 
   @override
   void initState() {
@@ -44,11 +45,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       precacheImage(Assets.images.loginCard3.provider(), context);
 
       ref.read(homeCardSlideNotifierProvider.notifier).startNotify();
+
+      allProducts = ref.watch(currentRouteProvider);
+
     });
 
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -61,6 +64,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (kDebugMode) {
       print("_HomeScreen => build()");
     }
+
+
+    // Set up a listener for currentRouteProvider to detect route changes
+    ref.listen<String>(
+      currentRouteProvider,
+          (previousRoute, currentRoute) {
+        if (previousRoute != currentRoute) {
+          print('previousRoute - $previousRoute');
+          print('currentRoute - $currentRoute');
+        }
+      },
+    );
 
     // precacheImage(Assets.images.loginCard1.provider(), context);
     // precacheImage(Assets.images.loginCard2.provider(), context);
