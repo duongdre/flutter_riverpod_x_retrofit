@@ -1,16 +1,16 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:async';
 
-part 'login_provider.g.dart';
+part 'home_screen_provider.g.dart';
 
 // Generated notifier providers
 
 @riverpod
-class LoginNotifier extends _$LoginNotifier {
+class HomeScreenNotifier extends _$HomeScreenNotifier {
 
   @override
   Stream<int> build() {
-    return Stream.periodic(const Duration(milliseconds: 2000), (count) {
+    return Stream.periodic(const Duration(minutes: 2000), (count) {
       // Toggle the boolean value every second
       return count % 3;
     });

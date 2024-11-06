@@ -1,29 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
-import '../../../gen/fonts.gen.dart';
 import '../../../widgets/buttons/button_blue_rouned_shared.dart';
 import '../../../widgets/buttons/button_icon_with_text_shared.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../widgets/buttons/card_slide_shared.dart';
-import '../controller/login_provider.dart';
+import '../controller/home_screen_provider.dart';
 
-/*class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({super.key});
+
+  static const routeName = 'home';
+  static const routePath = "/$routeName";
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
-}*/
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
 
-class LoginScreen extends ConsumerWidget {
-  const LoginScreen({super.key});
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  late FirebaseFirestore db;
 
-  /*@override
+  @override
   void initState() {
+    // FirebaseFirestore.setLoggingEnabled(true);
+
+    db = FirebaseFirestore.instance;
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       precacheImage(Assets.images.loginCard1.provider(), context);
       precacheImage(Assets.images.loginCard2.provider(), context);
@@ -31,17 +38,17 @@ class LoginScreen extends ConsumerWidget {
     });
 
     super.initState();
-  }*/
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     if (kDebugMode) {
       print("_LoginScreenState => build()");
     }
 
-    precacheImage(Assets.images.loginCard1.provider(), context);
-    precacheImage(Assets.images.loginCard2.provider(), context);
-    precacheImage(Assets.images.loginCard3.provider(), context);
+    // precacheImage(Assets.images.loginCard1.provider(), context);
+    // precacheImage(Assets.images.loginCard2.provider(), context);
+    // precacheImage(Assets.images.loginCard3.provider(), context);
 
     return Scaffold(
       body: Stack(
@@ -117,7 +124,7 @@ class LoginScreen extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 12, right: 12),
                       child: CardSlideShared(
-                        provider: loginNotifierProvider,
+                        provider: homeScreenNotifierProvider,
                         images: [
                           Assets.images.loginCard1.provider(),
                           Assets.images.loginCard2.provider(),
@@ -131,7 +138,17 @@ class LoginScreen extends ConsumerWidget {
                       child: ButtonBlueRounedShared(
                           height: 60,
                           width: double.infinity,
-                          onTap: () {},
+                          onTap: () async {
+                            print("=========== START ===========");
+
+                            await db.collection("users").get().then((event) {
+                              for (var doc in event.docs) {
+                                print("${doc.id} => ${doc.data()}");
+                              }
+                            });
+
+                            print("=========== END ===========");
+                          },
                           text: Text(
                             AppLocalizations.of(context)!.login,
                             style: const TextStyle(
