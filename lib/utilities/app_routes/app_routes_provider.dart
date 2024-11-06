@@ -7,9 +7,10 @@ import '../../main.dart';
 import '../../screens/home/UI/home_screen.dart';
 import '../../screens/login/UI/login_screen.dart';
 import '../../screens/splash/UI/splash_screen.dart';
-import 'app_routes_navigator_observer.dart';
 
 part 'app_routes_provider.g.dart';
+
+// Generated notifier providers
 
 @riverpod
 class AppRouteStateNotifier extends _$AppRouteStateNotifier {
