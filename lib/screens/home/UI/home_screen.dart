@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
+import '../../../utilities/app_routes/app_route_provider.dart';
 import '../../../widgets/buttons/button_blue_rouned_shared.dart';
 import '../../../widgets/buttons/button_icon_with_text_shared.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,26 +29,21 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late FirebaseFirestore db;
-  bool isVisible = true;
-  String allProducts = "";
 
   @override
   void initState() {
     // FirebaseFirestore.setLoggingEnabled(true);
 
-    // ref.read(homeCardSlideNotifierProvider.notifier).startNotify();
-
     db = FirebaseFirestore.instance;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Precache Image for user experience
       precacheImage(Assets.images.loginCard1.provider(), context);
       precacheImage(Assets.images.loginCard2.provider(), context);
       precacheImage(Assets.images.loginCard3.provider(), context);
 
-      ref.read(homeCardSlideNotifierProvider.notifier).startNotify();
-
-      allProducts = ref.watch(currentRouteProvider);
-
+      // Start run card slide
+      // ref.read(homeCardSlideNotifierProvider.notifier).startNotify();
     });
 
     super.initState();
@@ -60,27 +56,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    print("_HomeScreen => didChangeDependencies()");
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print("_HomeScreen => build()");
-    }
-
-
-    // Set up a listener for currentRouteProvider to detect route changes
-    ref.listen<String>(
-      currentRouteProvider,
-          (previousRoute, currentRoute) {
-        if (previousRoute != currentRoute) {
-          print('previousRoute - $previousRoute');
-          print('currentRoute - $currentRoute');
-        }
-      },
-    );
-
-    // precacheImage(Assets.images.loginCard1.provider(), context);
-    // precacheImage(Assets.images.loginCard2.provider(), context);
-    // precacheImage(Assets.images.loginCard3.provider(), context);
-
+    print("_HomeScreen => build()");
     return Scaffold(
       body: Stack(
         children: [
@@ -95,6 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+
               /// loginHeaderViewElement
               Padding(
                 padding: const EdgeInsets.only(top: 80),
@@ -171,13 +155,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           height: 60,
                           width: double.infinity,
                           onTap: () {
-                            ref.read(homeCardSlideNotifierProvider.notifier).stopNotify();
                             context.goNamed(LoginScreen.routeName);
                           },
                           text: Text(
                             AppLocalizations.of(context)!.login,
                             style: const TextStyle(
-                                // fontFamily: FontFamily.raleway,
+                              // fontFamily: FontFamily.raleway,
                                 fontSize: 20,
                                 color: ColorName.whiteColor,
                                 fontWeight: FontWeight.w600),
@@ -196,7 +179,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           text: Text(
                             AppLocalizations.of(context)!.loginGetOtp,
                             style:
-                                const TextStyle(color: ColorName.whiteColor, fontSize: 16, fontWeight: FontWeight.w700),
+                            const TextStyle(color: ColorName.whiteColor, fontSize: 16, fontWeight: FontWeight.w700),
                           ),
                           onPressed: () {},
                         ),
@@ -210,7 +193,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           text: Text(
                             AppLocalizations.of(context)!.loginGetRegister,
                             style:
-                                const TextStyle(color: ColorName.whiteColor, fontSize: 16, fontWeight: FontWeight.w700),
+                            const TextStyle(color: ColorName.whiteColor, fontSize: 16, fontWeight: FontWeight.w700),
                           ),
                           onPressed: () {},
                         ),
@@ -224,7 +207,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           text: Text(
                             AppLocalizations.of(context)!.loginGetQr,
                             style:
-                                const TextStyle(color: ColorName.whiteColor, fontSize: 16, fontWeight: FontWeight.w700),
+                            const TextStyle(color: ColorName.whiteColor, fontSize: 16, fontWeight: FontWeight.w700),
                           ),
                           onPressed: () {},
                         ),

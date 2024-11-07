@@ -3,6 +3,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:async';
 
 import '../../../gen/assets.gen.dart';
+import '../../../utilities/app_routes/app_route_provider.dart';
+import '../UI/home_screen.dart';
 
 part 'home_screen_provider.g.dart';
 
@@ -26,21 +28,29 @@ class HomeCardSlideNotifier extends _$HomeCardSlideNotifier {
     Assets.images.loginCard3.provider(),
   ];
 
-  bool isHomeShown = true;
-
   @override
   NotifyState build() {
+    print("HomeCardSlideNotifier => build()");
+
+    state = NotifyState(value: getFirstIfNull(), isNotifying: false);
+
     ref.onDispose(() {
-      print("HomeCardSlideNotifier disposed");
-      isHomeShown = false;
       _timer?.cancel();
     });
 
-    return NotifyState(value: getFirstIfNull(), isNotifying: false);
+    final currentUri = ref.watch(currentRouteProvider);
+    if (currentUri.toString() == HomeScreen.routePath) {
+      startNotify();
+    } else {
+      stopNotify();
+    }
+
+    return state;
   }
 
   // Start notifying every second
   void startNotify() {
+    print("HomeCardSlideNotifier => startNotify()");
     if (state.isNotifying == false) {
       state = NotifyState(value: state.value, isNotifying: true);
       _startTimer();
@@ -49,6 +59,7 @@ class HomeCardSlideNotifier extends _$HomeCardSlideNotifier {
 
   // Stop notifying
   void stopNotify() {
+    print("HomeCardSlideNotifier => startNotify()");
     _timer?.cancel();
     state = NotifyState(value: state.value, isNotifying: false);
   }
