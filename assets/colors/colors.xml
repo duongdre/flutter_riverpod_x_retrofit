@@ -2,4 +2,12 @@
 <resources>
     <color name="whiteColor">#fefefd</color>
     <color name="blueColor">#2c74fe</color>
+
+    <color name="loginIconColorGray">#636268</color>
+    <color name="loginAvatarBackGround">#6C7098</color>
+    <color name="loginTextColorBlue">#192E87</color>
+    <color name="loginTextColorGray">#787882</color>
+    <color name="loginIconColor">#145FDB</color>
+    <color name="loginButtonDisable">#EEF0FF</color>
+    <color name="loginButtonDisable">#EEF0FF</color>
 </resources>
