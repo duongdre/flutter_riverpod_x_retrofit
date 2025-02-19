@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:acb/main.dart';
 import 'package:acb/screens/home/UI/home_screen.dart';
-import 'package:acb/screens/home/hall/UI/hall_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,7 +22,7 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ScaffoldFaceIDWrapper(
       method: () {
-        context.goNamed(HallScreen.routeName);
+        // context.goNamed(HallScreen.routeName);
       },
       appBar: AppBar(
         leading: InkWell(

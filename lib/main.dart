@@ -26,6 +26,7 @@ class MyApp extends ConsumerWidget {
       // also provides auto-generated localizationsDelegates and supportedLocales lists
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('vi'),
       /*localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

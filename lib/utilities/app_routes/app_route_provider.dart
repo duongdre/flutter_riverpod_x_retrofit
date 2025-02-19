@@ -1,4 +1,3 @@
-import 'package:acb/screens/home/hall/UI/hall_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -44,12 +43,7 @@ final routerProvider = Provider<GoRouter>(
             name: LoginScreen.routeName,
             builder: (context, state) => const LoginScreen(),
             routes: [
-              GoRoute(
-                path: HallScreen.routePath,
-                name: HallScreen.routeName,
-                builder: (context, state) => const HallScreen(),
-                routes: [],
-              )
+
             ],
           ),
         ],
